@@ -23,7 +23,9 @@
 # protected_branch='main'
 protected_branches=( main devel )
 
-allowed_users=( mo3taz1705 )
+allowed_users1=( mo3taz1705 )
+
+allowed_extensions=( .yaml .launch )
 
 
 # policy="\n\n[Policy] Never push code directly to the "$protected_branch" branch! (Prevented with pre-push hook.)\n\n"
@@ -36,6 +38,9 @@ echo $current_user
 
 push_command=$(ps -ocommand= -p $PPID)
 echo $push_command
+
+current_changes=$(git diff)
+echo $current_changes
 
 is_destructive='force|delete|\-f|\-d'
 
@@ -65,11 +70,17 @@ do
     do_exit
   fi
 
+  if [[ " ${allowed_extensions[@]} " =~ " ${current_changes} " ]]; then
+    echo "fourth"
+    # do_exit
+    exit 0
+  fi
+
   # Prevent ALL pushes to protected_branch
   if [[ $push_command =~ $protected_branch ]] || [ $current_branch = $protected_branch ]; then
-    if [[ ! " ${allowed_users[@]} " =~ " ${current_user} " ]]; then
+    if [[ ! " ${allowed_users1[@]} " =~ " ${current_user} " ]]; then
       # whatever you want to do when array doesn't contain value
-      echo "fourth"
+      echo "fifth"
       do_exit
     fi
     
