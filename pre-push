@@ -40,7 +40,7 @@ push_command=$(ps -ocommand= -p $PPID)
 echo $push_command
 
 current_changes=$(git diff)
-echo $current_changes
+echo "current_changes: $current_changes"
 
 is_destructive='force|delete|\-f|\-d'
 
