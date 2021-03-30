@@ -1,0 +1,82 @@
+#!/bin/bash
+
+# @link https://gist.github.com/mattscilipoti/8424018
+#
+# Called by "git push" after it has checked the remote status,
+# but before anything has been pushed.
+#
+# If this script exits with a non-zero status nothing will be pushed.
+#
+# Steps to install, from the root directory of your repo...
+# 1. Copy the file into your repo at `.git/hooks/pre-push`
+# 2. Set executable permissions, run `chmod +x .git/hooks/pre-push`
+# 3. Or, use `rake hooks:pre_push` to install
+#
+# Try a push to main, you should get a message `*** [Policy] Never push code directly to...`
+#
+# The commands below will not be allowed...
+# `git push origin main`
+# `git push --force origin main`
+# `git push --delete origin main`
+
+
+# protected_branch='main'
+protected_branches=( main devel )
+
+allowed_users=( mo3taz1705 )
+
+
+# policy="\n\n[Policy] Never push code directly to the "$protected_branch" branch! (Prevented with pre-push hook.)\n\n"
+
+current_branch=$(git symbolic-ref HEAD | sed -e 's,.*/\(.*\),\1,')
+echo $current_branch
+
+current_user=$(git config user.name)
+echo $current_user
+
+push_command=$(ps -ocommand= -p $PPID)
+echo $push_command
+
+is_destructive='force|delete|\-f|\-d'
+
+will_remove_protected_branch=':'$protected_branch
+
+do_exit(){
+  policy="\n\n[Policy] Never push code directly to the "$current_branch" branch! (Prevented with pre-push hook.)\n\n"
+  echo -e $policy
+  exit 1
+}
+
+
+for protected_branch in "${protected_branches[@]}"
+do
+  if [[ $push_command =~ $is_destructive ]] && [[ $push_command =~ $protected_branch ]]; then
+    echo "first"
+    do_exit
+  fi
+
+  if [[ $push_command =~ $is_destructive ]] && [ $current_branch = $protected_branch ]; then
+    echo "second"
+    do_exit
+  fi
+
+  if [[ $push_command =~ $will_remove_protected_branch ]]; then
+    echo "third"
+    do_exit
+  fi
+
+  # Prevent ALL pushes to protected_branch
+  if [[ $push_command =~ $protected_branch ]] || [ $current_branch = $protected_branch ]; then
+    if [[ ! " ${allowed_users[@]} " =~ " ${current_user} " ]]; then
+      # whatever you want to do when array doesn't contain value
+      echo "fourth"
+      do_exit
+    fi
+    
+  fi
+done
+
+
+unset do_exit
+
+exit 0
