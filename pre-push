@@ -23,7 +23,7 @@
 # protected_branch='main'
 protected_branches=( main devel )
 
-allowed_users1=( mo3taz17051 )
+allowed_users1=( mo3taz1705 )
 
 allowed_extensions=( .yaml .launch )
 
