@@ -67,7 +67,7 @@ all_allowed='true'
         CHANGED_FILES=$(git diff --name-only $local_sha $remote_sha)
         # echo "changed_files: $CHANGED_FILES"
         if [ ! -z "$CHANGED_FILES" -a "$CHANGED_FILES" != " " ]; then
-            # echo $CHANGED_FILES
+            echo $CHANGED_FILES
             read -r -a CHANGED_FILES_array <<< "${CHANGED_FILES}"
             for i in "${CHANGED_FILES_array[@]}"
             do
