@@ -94,8 +94,8 @@ do
   if [[ $push_command =~ $protected_branch ]] || [ $current_branch = $protected_branch ]; then
     # if [[ ! " ${allowed_users1[@]} " =~ " ${current_user} " ]]; then
     #   # whatever you want to do when array doesn't contain value
-    #   echo "fifth"
-    #   do_exit
+      echo "fifth"
+      do_exit
     # fi
     echo "fifth"
   fi
