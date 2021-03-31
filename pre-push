@@ -70,13 +70,13 @@ all_allowed='true'
             # echo $CHANGED_FILES
             for i in "${CHANGED_FILES[@]}"
             do
-              # echo "$i"
+              echo "$i"
               # IFS='.'
               # or do whatever with individual element of the array
               found='false'
               for allowed_extension in "${allowed_extensions[@]}"
               do
-                echo ${i}
+                echo ${allowed_extension}
                 if echo "${i}" | grep "${allowed_extension}"; then
                   found='true'
                   break
