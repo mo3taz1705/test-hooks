@@ -25,7 +25,7 @@ protected_branches=( main devel )
 
 allowed_users1=( mo3taz1705 )
 
-allowed_extensions=( yaml launch )
+allowed_extensions=( *.yaml *.launch )
 
 
 # policy="\n\n[Policy] Never push code directly to the "$protected_branch" branch! (Prevented with pre-push hook.)\n\n"
