@@ -76,7 +76,7 @@ all_allowed='true'
               for allowed_extension in "${allowed_extensions[@]}"
               do
                 echo ${i}
-                if echo " ${i} " | grep " .${allowed_extension} "; then
+                if ! echo " ${i} " | grep " .${allowed_extension} "; then
                   all_allowed='false'
                 fi
               done
