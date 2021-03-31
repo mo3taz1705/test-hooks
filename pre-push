@@ -53,27 +53,7 @@ do_exit(){
 }
 
 
-for protected_branch in "${protected_branches[@]}"
-do
-  if [[ $push_command =~ $is_destructive ]] && [[ $push_command =~ $protected_branch ]]; then
-    echo "first"
-    do_exit
-  fi
-
-  if [[ $push_command =~ $is_destructive ]] && [ $current_branch = $protected_branch ]; then
-    echo "second"
-    do_exit
-  fi
-
-  if [[ $push_command =~ $will_remove_protected_branch ]]; then
-    echo "third"
-    do_exit
-  fi
-
-
-  # if [[ " ${allowed_extensions[@]} " =~ " ${current_changes} " ]]; then
-    # IFS=' '
-    all_allowed='true'
+all_allowed='true'
     while read local_ref local_sha remote_ref remote_sha;
     do
         echo "fourth"
@@ -96,6 +76,30 @@ do
         fi
     done
     echo $all_allowed
+
+
+
+for protected_branch in "${protected_branches[@]}"
+do
+  if [[ $push_command =~ $is_destructive ]] && [[ $push_command =~ $protected_branch ]]; then
+    echo "first"
+    do_exit
+  fi
+
+  if [[ $push_command =~ $is_destructive ]] && [ $current_branch = $protected_branch ]; then
+    echo "second"
+    do_exit
+  fi
+
+  if [[ $push_command =~ $will_remove_protected_branch ]]; then
+    echo "third"
+    do_exit
+  fi
+
+
+  # if [[ " ${allowed_extensions[@]} " =~ " ${current_changes} " ]]; then
+    # IFS=' '
+    
     # # do_exit
     # exit 0
   # fi
