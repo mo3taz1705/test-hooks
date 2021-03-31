@@ -65,7 +65,7 @@ all_allowed='true'
         # echo $remote_sha
         # echo $remote_ref
         CHANGED_FILES=$(git diff --name-only $local_sha $remote_sha)
-        echo "changed_files: $CHANGED_FILES"
+        # echo "changed_files: $CHANGED_FILES"
         if [ ! -z "$CHANGED_FILES" -a "$CHANGED_FILES" != " " ]; then
             # echo $CHANGED_FILES
             for i in "${CHANGED_FILES[@]}"
@@ -89,7 +89,7 @@ all_allowed='true'
                 all_allowed='false'
                 break
               fi
-              echo "all_allowed after $all_allowed"
+              # echo "all_allowed after $all_allowed"
               # IFS=' '
             done
           
