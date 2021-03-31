@@ -84,11 +84,12 @@ all_allowed='true'
               done
               if [ $found != 'true' ]; then
                 all_allowed='false'
+                break
               fi
               # IFS=' '
             done
           
-          
+
             
             # RET=$?
             # if [ $RET -ne 0 ]; then
