@@ -70,7 +70,7 @@ all_allowed='true'
             # echo $CHANGED_FILES
             for i in "${CHANGED_FILES[@]}"
             do
-              echo "$i"
+              # echo "$i"
               # or do whatever with individual element of the array
               if [[ ! " ${allowed_extensions[@]} " =~ " ${i} " ]]; then
                 all_allowed='false'
