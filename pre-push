@@ -66,7 +66,7 @@ all_allowed='true'
         echo "changed_files: $CHANGED_FILES"
         if [ ! -z "$CHANGED_FILES" -a "$CHANGED_FILES" != " " ]; then
             echo $CHANGED_FILES
-            if [[ ! " ${allowed_extensions[@]} " =~ " ${CHANGED_FILES} " ]]; then
+            if [[ ! " ${allowed_extensions[@]} " =~ " ${CHANGED_FILES[@]} " ]]; then
              all_allowed='false'
             fi
             # RET=$?
