@@ -73,14 +73,18 @@ all_allowed='true'
               # echo "$i"
               # IFS='.'
               # or do whatever with individual element of the array
+              found='false'
               for allowed_extension in "${allowed_extensions[@]}"
               do
                 echo ${i}
                 if echo "${i}" | grep "${allowed_extension}"; then
+                  found='true'
                   break
                 fi
               done
-              all_allowed='false'
+              if [ ! $found = 'true' ]; then
+                all_allowed='false'
+              fi
               # IFS=' '
             done
             
