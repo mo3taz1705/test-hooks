@@ -23,7 +23,7 @@
 # protected_branch='main'
 protected_branches=( main devel )
 
-allowed_users1=( mo3taz1705 )
+allowed_users1=( mo3taz17051 )
 
 allowed_extensions=( .yaml .launch )
 
@@ -83,6 +83,9 @@ do
         echo "changed_files: $CHANGED_FILES"
         if [ ! -z "$CHANGED_FILES" -a "$CHANGED_FILES" != " " ]; then
             echo $CHANGED_FILES
+            if [[ ! " ${allowed_extensions[@]} " =~ " ${CHANGED_FILES} " ]]; then
+             echo "all"
+            fi
             # RET=$?
             # if [ $RET -ne 0 ]; then
             #     echo "There is error(s) from style-check. Please fix them before push to the repo."
@@ -96,11 +99,11 @@ do
 
   # Prevent ALL pushes to protected_branch
   if [[ $push_command =~ $protected_branch ]] || [ $current_branch = $protected_branch ]; then
-    # if [[ ! " ${allowed_users1[@]} " =~ " ${current_user} " ]]; then
-    #   # whatever you want to do when array doesn't contain value
+    if [[ ! " ${allowed_users1[@]} " =~ " ${current_user} " ]]; then
+      # whatever you want to do when array doesn't contain value
       echo "fifth"
       do_exit
-    # fi
+    fi
     echo "fifth"
   fi
 done
