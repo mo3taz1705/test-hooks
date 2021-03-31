@@ -73,6 +73,7 @@ do
 
   # if [[ " ${allowed_extensions[@]} " =~ " ${current_changes} " ]]; then
     # IFS=' '
+    all_allowed='true'
     while read local_ref local_sha remote_ref remote_sha;
     do
         echo "fourth"
@@ -85,7 +86,7 @@ do
         if [ ! -z "$CHANGED_FILES" -a "$CHANGED_FILES" != " " ]; then
             echo $CHANGED_FILES
             if [[ ! " ${allowed_extensions[@]} " =~ " ${CHANGED_FILES} " ]]; then
-             echo "all"
+             all_allowed='false'
             fi
             # RET=$?
             # if [ $RET -ne 0 ]; then
@@ -94,6 +95,7 @@ do
             # fi
         fi
     done
+    echo $all_allowed
     # # do_exit
     # exit 0
   # fi
