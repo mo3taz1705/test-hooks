@@ -73,9 +73,12 @@ all_allowed='true'
               # echo "$i"
               # IFS='.'
               # or do whatever with individual element of the array
-              if [[ ! " ${i} " =~ " ${allowed_extensions[@]} " ]]; then
-                all_allowed='false'
-              fi
+              for allowed_extension in "${allowed_extensions[@]}"
+              do
+                if [[ ! " ${i} " =~ " ${allowed_extension} " ]]; then
+                  all_allowed='false'
+                fi
+              done
               # IFS=' '
             done
             
