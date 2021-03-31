@@ -71,10 +71,14 @@ do
   fi
 
   # if [[ " ${allowed_extensions[@]} " =~ " ${current_changes} " ]]; then
-    # IFS=' '
+    IFS=' '
     while read local_ref local_sha remote_ref remote_sha;
     do
         echo "fourth"
+        echo $local_sha
+        echo $local_ref
+        echo $remote_sha
+        echo $remote_ref
         CHANGED_FILES=$(git diff --name-only $local_sha $remote_sha)
         echo "changed_files: $CHANGED_FILES"
         if [ ! -z "$CHANGED_FILES" -a "$CHANGED_FILES" != " " ]; then
