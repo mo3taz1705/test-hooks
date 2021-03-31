@@ -77,9 +77,10 @@ all_allowed='true'
               do
                 echo ${i}
                 if ! echo "${i}" | grep "${allowed_extension}"; then
-                  all_allowed='false'
+                  break
                 fi
               done
+              all_allowed='false'
               # IFS=' '
             done
             
