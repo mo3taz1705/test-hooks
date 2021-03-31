@@ -84,11 +84,12 @@ all_allowed='true'
               done
               # if [ $found != 'true' ] && [ "$all_allowed" = "true" ]; then
               echo "found $found"
-              echo "all_allowed $all_allowed"
+              echo "all_allowed before $all_allowed"
               if [ $found != 'true' ]; then
                 all_allowed='false'
                 break
               fi
+              echo "all_allowed after $all_allowed"
               # IFS=' '
             done
           
