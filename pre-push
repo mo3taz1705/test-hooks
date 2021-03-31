@@ -71,7 +71,7 @@ all_allowed='true'
             echo $CHANGED_FILES
             printf "$CHANGED_FILES"
             # IFS=" " read -r -a CHANGED_FILES_array <<< "${CHANGED_FILES}"
-            read -a CHANGED_FILES_array <<< "$CHANGED_FILES"
+            IFS='\n' read -a CHANGED_FILES_array <<< "$CHANGED_FILES"
             for i in "${CHANGED_FILES_array[@]}";
             do
               echo "73"
