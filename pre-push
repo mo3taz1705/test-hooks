@@ -76,7 +76,7 @@ do
     do
         echo "fourth"
         CHANGED_FILES=$(git diff --name-only $local_sha $remote_sha)
-        echo $CHANGED_FILES
+        echo "changed_files: $CHANGED_FILES"
         if [ ! -z "$CHANGED_FILES" -a "$CHANGED_FILES" != " " ]; then
             echo $CHANGED_FILES
             # RET=$?
