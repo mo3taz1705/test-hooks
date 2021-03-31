@@ -66,10 +66,16 @@ all_allowed='true'
         CHANGED_FILES=$(git diff --name-only $local_sha $remote_sha)
         echo "changed_files: $CHANGED_FILES"
         if [ ! -z "$CHANGED_FILES" -a "$CHANGED_FILES" != " " ]; then
-            echo $CHANGED_FILES
-            if [[ ! " ${allowed_extensions[@]} " =~ " ${CHANGED_FILES[@]} " ]]; then
-             all_allowed='false'
-            fi
+            # echo $CHANGED_FILES
+            for i in "${CHANGED_FILES[@]}"
+            do
+              echo "$i"
+              # or do whatever with individual element of the array
+              if [[ ! " ${allowed_extensions[@]} " =~ " ${i} " ]]; then
+                all_allowed='false'
+              fi
+            done
+            
             # RET=$?
             # if [ $RET -ne 0 ]; then
             #     echo "There is error(s) from style-check. Please fix them before push to the repo."
