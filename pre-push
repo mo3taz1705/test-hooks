@@ -93,7 +93,7 @@ all_allowed='true'
                 echo "83"
                 if echo "${i}" | grep "${allowed_extension}"; then
                   found='true'
-                  # break
+                  break
                 fi
               done
               # if [ $found != 'true' ] && [ "$all_allowed" = "true" ]; then
@@ -101,7 +101,7 @@ all_allowed='true'
               echo "all_allowed before $all_allowed"
               if [ $found != 'true' ]; then
                 all_allowed='false'
-                # break
+                break
               fi
               # echo "all_allowed after $all_allowed"
               # IFS=' '
