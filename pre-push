@@ -39,8 +39,8 @@ echo $current_user
 push_command=$(ps -ocommand= -p $PPID)
 echo $push_command
 
-current_changes=$(git diff)
-echo "current_changes: $current_changes"
+# current_changes=$(git diff)
+# echo "current_changes: $current_changes"
 
 is_destructive='force|delete|\-f|\-d'
 
@@ -70,10 +70,11 @@ do
     do_exit
   fi
 
-  if [[ " ${allowed_extensions[@]} " =~ " ${current_changes} " ]]; then
-    echo "fourth"
+  # if [[ " ${allowed_extensions[@]} " =~ " ${current_changes} " ]]; then
+    # IFS=' '
     while read local_ref local_sha remote_ref remote_sha;
     do
+        echo "fourth"
         CHANGED_FILES=$(git diff --name-only $local_sha $remote_sha | grep '\(cpp\|h\)$')
         if [ ! -z "$CHANGED_FILES" -a "$CHANGED_FILES" != " " ]; then
             echo $CHANGED_FILES
@@ -84,9 +85,9 @@ do
             # fi
         fi
     done
-    # do_exit
-    exit 0
-  fi
+    # # do_exit
+    # exit 0
+  # fi
 
   # Prevent ALL pushes to protected_branch
   if [[ $push_command =~ $protected_branch ]] || [ $current_branch = $protected_branch ]; then
@@ -95,7 +96,7 @@ do
     #   echo "fifth"
     #   do_exit
     # fi
-    
+    echo "fifth"
   fi
 done
 
