@@ -62,7 +62,7 @@ do
 done
 
 do_exit(){
-  policy="\n\n[Policy] Never push code directly to the "$current_branch" branch! (Prevented with pre-push hook.)\n\n"
+  policy="\n[Policy] Never push code directly to the "$current_branch" branch! (Prevented with pre-push hook.)\n\n"
   echo -e $policy
   exit $1
 }
@@ -113,4 +113,3 @@ done
 unset do_exit
 
 exit 0
-
