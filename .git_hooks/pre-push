@@ -105,7 +105,7 @@ do
     fi
   fi
 
-  Prevent ALL pushes to protected_branch if the user not from the allowed users
+  # Prevent ALL pushes to protected_branch if the user not from the allowed users
   if [[ $push_command =~ $protected_branch ]] || [ $current_branch = $protected_branch ]; then
     if [[ ! " ${allowed_users1[@]} " =~ " ${current_user} " ]]; then
       echo "5"
