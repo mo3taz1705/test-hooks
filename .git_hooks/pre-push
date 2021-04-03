@@ -1,0 +1,110 @@
+#!/bin/bash
+
+# this link for reference @link https://gist.github.com/mattscilipoti/8424018
+#
+# this script called by "git push" after it has checked the remote status,
+# but before anything has been pushed.
+#
+# If this script exits with a non-zero status nothing will be pushed.
+#
+# Steps to install, from the root directory of your repo...
+# 1. git config core.hooksPath .git_hooks
+#
+# Try a push to main, you should get a message `*** [Policy] Never push code directly to...`
+#
+# The commands below will not be allowed...
+# `git push origin main`
+# `git push --force origin main`
+# `git push --delete origin main`
+
+
+protected_branches=( main devel )
+
+allowed_extensions=( yaml launch )
+
+allowed_users1=( mo3taz1705 )
+
+allowed_users2=( mo3taz1705 )
+
+current_branch=$(git symbolic-ref HEAD | sed -e 's,.*/\(.*\),\1,')
+
+current_user=$(git config user.name)
+
+push_command=$(ps -ocommand= -p $PPID)
+
+is_destructive='force|delete|\-f|\-d'
+
+will_remove_protected_branch=':'$protected_branch
+
+all_allowed='true'
+
+while read local_ref local_sha remote_ref remote_sha;
+do
+  CHANGED_FILES=$(git diff --name-only $local_sha $remote_sha)
+  if [ ! -z "$CHANGED_FILES" -a "$CHANGED_FILES" != " " ]; then
+    CHANGED_FILES_array=($CHANGED_FILES)
+    for file in "${CHANGED_FILES_array[@]}";
+    do
+      found='false'
+      for allowed_extension in "${allowed_extensions[@]}"
+      do
+        if echo "${file}" | grep "${allowed_extension}"; then
+          found='true'
+          break
+        fi
+      done
+      if [ $found != 'true' ]; then
+        all_allowed='false'
+        break
+      fi
+    done
+  fi
+done
+
+do_exit(){
+  policy="\n\n[Policy] Never push code directly to the "$current_branch" branch! (Prevented with pre-push hook.)\n\n"
+  echo -e $policy
+  exit $1
+}
+
+for protected_branch in "${protected_branches[@]}"
+do
+  # to prevent
+  # `git push origin main`
+  # while the branch checked out is one of the protected branches
+  if [[ $push_command =~ $is_destructive ]] && [[ $push_command =~ $protected_branch ]]; then
+    do_exit 1
+  fi
+
+  # to prevent
+  # `git push`
+  # while the branch checked out is one of the protected branches
+  if [[ $push_command =~ $is_destructive ]] && [ $current_branch = $protected_branch ]; then
+    do_exit 2
+  fi
+
+  # to prevent
+  # `git push origin :main`
+  # while the branch checked out is one of the protected branches
+  if [[ $push_command =~ $will_remove_protected_branch ]]; then
+    do_exit 3
+  fi
+
+  # to allow pushing from some users if all the changes are in the allowed extensions files
+  if [ $all_allowed = 'true' ]; then
+    if [[ " ${allowed_users2[@]} " =~ " ${current_user} " ]]; then
+      exit 0
+    fi
+  fi
+
+  # Prevent ALL pushes to protected_branch if the user not from the allowed users
+  if [[ $push_command =~ $protected_branch ]] || [ $current_branch = $protected_branch ]; then
+    if [[ ! " ${allowed_users1[@]} " =~ " ${current_user} " ]]; then
+      do_exit 4
+    fi
+  fi
+done
+
+unset do_exit
+
+exit 0
