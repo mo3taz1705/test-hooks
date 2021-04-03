@@ -24,7 +24,7 @@ allowed_extensions=( yaml launch )
 
 allowed_users1=( mo3taz1705 )
 
-allowed_users2=( mo3taz1705 )
+allowed_users2=( mo3taz17052 )
 
 current_branch=$(git symbolic-ref HEAD | sed -e 's,.*/\(.*\),\1,')
 
