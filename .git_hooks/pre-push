@@ -73,6 +73,7 @@ do
   # `git push origin main`
   # while the branch checked out is one of the protected branches
   if [[ $push_command =~ $is_destructive ]] && [[ $push_command =~ $protected_branch ]]; then
+    echo "1"
     do_exit 1
   fi
 
@@ -80,6 +81,7 @@ do
   # `git push`
   # while the branch checked out is one of the protected branches
   if [[ $push_command =~ $is_destructive ]] && [ $current_branch = $protected_branch ]; then
+    echo "2"
     do_exit 2
   fi
 
@@ -87,12 +89,14 @@ do
   # `git push origin :main`
   # while the branch checked out is one of the protected branches
   if [[ $push_command =~ $will_remove_protected_branch ]]; then
+    echo "3"
     do_exit 3
   fi
 
   # to allow pushing from some users if all the changes are in the allowed extensions files
   if [ $all_allowed = 'true' ]; then
     if [[ " ${allowed_users2[@]} " =~ " ${current_user} " ]]; then
+      echo "4"
       exit 0
     fi
   fi
@@ -100,7 +104,8 @@ do
   # Prevent ALL pushes to protected_branch if the user not from the allowed users
   if [[ $push_command =~ $protected_branch ]] || [ $current_branch = $protected_branch ]; then
     if [[ ! " ${allowed_users1[@]} " =~ " ${current_user} " ]]; then
-      do_exit 4
+      echo "5"
+      do_exit 5
     fi
   fi
 done
