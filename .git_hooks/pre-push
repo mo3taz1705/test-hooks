@@ -23,7 +23,7 @@ protected_branches=( main devel )
 allowed_extensions=( yaml launch )
 
 # authorised users list
-allowed_users1=( mo3taz17052 )
+allowed_users1=( mo3taz1705 )
 
 # test engineers and the authorised users
 allowed_users2=( mo3taz1705 )
@@ -106,12 +106,12 @@ do
   fi
 
   # Prevent ALL pushes to protected_branch if the user not from the allowed users
-  if [[ $push_command =~ $protected_branch ]] || [ $current_branch = $protected_branch ]; then
-    if [[ ! " ${allowed_users1[@]} " =~ " ${current_user} " ]]; then
-      echo "5"
-      do_exit 5
-    fi
-  fi
+  # if [[ $push_command =~ $protected_branch ]] || [ $current_branch = $protected_branch ]; then
+  #   if [[ ! " ${allowed_users1[@]} " =~ " ${current_user} " ]]; then
+  #     echo "5"
+  #     do_exit 5
+  #   fi
+  # fi
 done
 
 unset do_exit
