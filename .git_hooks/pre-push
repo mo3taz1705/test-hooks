@@ -96,7 +96,7 @@ do
   fi
 
   # to allow pushing from some users if all the changes are in the allowed extensions files
-  if [[ $all_allowed = 'true' ]] && [[ ! -z "$CHANGED_FILES" -a "$CHANGED_FILES" != " " ]]; then
+  if [[ $all_allowed = 'true' ]] && [[ "$CHANGED_FILES" != " " ]]; then
     if [[ " ${allowed_users2[@]} " =~ " ${current_user} " ]]; then
       echo "4"
       exit 0
