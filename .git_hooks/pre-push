@@ -58,6 +58,8 @@ do
         break
       fi
     done
+  else
+    all_allowed='false'
   fi
 done
 
