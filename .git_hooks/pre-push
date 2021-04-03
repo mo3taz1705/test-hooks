@@ -97,7 +97,7 @@ do
 
   # to allow pushing from some users if all the changes are in the allowed extensions files
   if [[ $all_allowed = 'true' ]] && [[ ! -z "$CHANGED_FILES" ]] && [[ "$CHANGED_FILES" != " " ]]; then
-    if [[ " ${allowed_users2[@]} " =~ " ${current_user} " ]]; then
+    if [[ " ${allowed_users2[@]} " =~ " ${current_user} " ]] && [[ $protected_branch = 'devel' ]]; then
       echo "4"
       exit 0
     fi
