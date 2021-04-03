@@ -22,7 +22,7 @@ protected_branches=( main devel )
 
 allowed_extensions=( yaml launch )
 
-allowed_users1=( mo3taz1705 )
+allowed_users1=( mo3taz17052 )
 
 allowed_users2=( mo3taz17052 )
 
