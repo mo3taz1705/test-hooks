@@ -72,7 +72,7 @@ do_exit(){
 for protected_branch in "${protected_branches[@]}"
 do
   # to prevent
-  # `git push origin main`
+  # `git push origin main -f|-d`
   # while the branch checked out is one of the protected branches
   if [[ $push_command =~ $is_destructive ]] && [[ $push_command =~ $protected_branch ]]; then
     echo "1"
@@ -80,7 +80,7 @@ do
   fi
 
   # to prevent
-  # `git push`
+  # `git push -f|-d`
   # while the branch checked out is one of the protected branches
   if [[ $push_command =~ $is_destructive ]] && [ $current_branch = $protected_branch ]; then
     echo "2"
