@@ -23,9 +23,11 @@ protected_branches=( main devel )
 allowed_extensions=( yaml launch )
 
 # authorised users list
+# TODO: add the required users
 allowed_users1=( mo3taz1705 )
 
 # test engineers and the authorised users
+# TODO: add the required users
 allowed_users2=( mo3taz1705 )
 
 current_branch=$(git symbolic-ref HEAD | sed -e 's,.*/\(.*\),\1,')
@@ -38,8 +40,9 @@ is_destructive='force|delete|\-f|\-d'
 
 will_remove_protected_branch=':'$protected_branch
 
-all_allowed='true'
+all_with_allowed_extensions='true'
 
+# check the extensions of all the changed files
 while read local_ref local_sha remote_ref remote_sha;
 do
   CHANGED_FILES=$(git diff --name-only $local_sha $remote_sha)
@@ -56,17 +59,18 @@ do
         fi
       done
       if [ $found != 'true' ]; then
-        all_allowed='false'
+        all_with_allowed_extensions='false'
         break
       fi
     done
   else
-    all_allowed='false'
+    all_with_allowed_extensions='false'
   fi
 done
 
 do_exit(){
   policy="\n[Policy] Never push code directly to the "$current_branch" branch! (Prevented with pre-push hook.)\n\n"
+  echo $1
   echo -e $policy
   exit $1
 }
@@ -77,7 +81,6 @@ do
   # `git push origin main -f|-d`
   # while the branch checked out is one of the protected branches
   if [[ $push_command =~ $is_destructive ]] && [[ $push_command =~ $protected_branch ]]; then
-    echo "1"
     do_exit 1
   fi
 
@@ -85,7 +88,6 @@ do
   # `git push -f|-d`
   # while the branch checked out is one of the protected branches
   if [[ $push_command =~ $is_destructive ]] && [ $current_branch = $protected_branch ]; then
-    echo "2"
     do_exit 2
   fi
 
@@ -93,12 +95,11 @@ do
   # `git push origin :main`
   # while the branch checked out is one of the protected branches
   if [[ $push_command =~ $will_remove_protected_branch ]]; then
-    echo "3"
     do_exit 3
   fi
 
   # to allow pushing from some users if all the changes are in the allowed extensions files
-  if [[ $all_allowed = 'true' ]] && [[ ! -z "$CHANGED_FILES" ]] && [[ "$CHANGED_FILES" != " " ]]; then
+  if [[ $all_with_allowed_extensions = 'true' ]] && [[ ! -z "$CHANGED_FILES" ]] && [[ "$CHANGED_FILES" != " " ]]; then
     if [[ " ${allowed_users2[@]} " =~ " ${current_user} " ]] && [[ $protected_branch = 'devel' ]] && [[ $current_branch = 'devel' ]]; then
       echo "4"
       exit 0
@@ -108,7 +109,6 @@ do
   # Prevent ALL pushes to protected_branch if the user not from the allowed users
   if [[ $push_command =~ $protected_branch ]] || [ $current_branch = $protected_branch ]; then
     if [[ ! " ${allowed_users1[@]} " =~ " ${current_user} " ]]; then
-      echo "5"
       do_exit 5
     fi
   fi
