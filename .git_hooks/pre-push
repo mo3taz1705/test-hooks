@@ -53,7 +53,7 @@ do
       found='false'
       for allowed_extension in "${allowed_extensions[@]}"
       do
-        if echo "${file}" | grep ".${allowed_extension}$" >/dev/null; then
+        if echo "${file}" | grep "\.${allowed_extension}$" >/dev/null; then
           found='true'
           break
         fi
